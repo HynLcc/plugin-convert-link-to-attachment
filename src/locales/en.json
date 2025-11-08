@@ -1,0 +1,26 @@
+{
+  "selection": {
+    "empty": "No content",
+    "hint": "Select a cell to preview",
+    "error": {
+      "invalidType": "Invalid selection",
+      "multipleCells": "Select only one cell",
+      "noRecords": "No data found",
+      "fetchFailed": "Load failed"
+    }
+  },
+  "demo": {
+    "content": "Markdown Renderer: Enter Markdown content in table cells and select them to preview the rendering effect."
+  },
+  "search": {
+    "placeholder": "Search in document...",
+    "searching": "Searching...",
+    "results": "results",
+    "noResults": "No results found",
+    "shortcuts": "Shortcuts:",
+    "found": "Found {{count}} match{{count, plural, =1 {} other {s}}}",
+    "navigate": "↑↓ Navigate",
+    "next": "Enter Next",
+    "close": "Esc Close"
+  }
+}

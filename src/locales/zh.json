@@ -1,0 +1,26 @@
+{
+  "selection": {
+    "empty": "无内容",
+    "hint": "选择单元格预览",
+    "error": {
+      "invalidType": "选区无效",
+      "multipleCells": "只能选择一个单元格",
+      "noRecords": "无数据",
+      "fetchFailed": "加载失败"
+    }
+  },
+  "demo": {
+    "content": "Markdown 渲染器：在表格单元格中输入 Markdown 内容，选中即可查看渲染效果。"
+  },
+  "search": {
+    "placeholder": "在文档中搜索...",
+    "searching": "搜索中...",
+    "results": "个结果",
+    "noResults": "未找到结果",
+    "shortcuts": "快捷键:",
+    "found": "找到 {{count}} 个匹配项",
+    "navigate": "↑↓ 导航",
+    "next": "Enter 下一个",
+    "close": "Esc 关闭"
+  }
+}

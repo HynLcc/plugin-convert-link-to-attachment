@@ -1,0 +1,45 @@
+{
+  "name": "plugin-markdown-renderer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
+    "optimize": "node scripts/optimize-assets.js",
+    "build:optimized": "npm run optimize && npm run build"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "@tanstack/react-query": "4.36.1",
+    "@teable/core": "latest",
+    "@teable/next-themes": "0.3.5",
+    "@teable/openapi": "latest",
+    "@teable/sdk": "latest",
+    "@teable/ui-lib": "latest",
+    "clsx": "^2.1.1",
+    "github-markdown-css": "^5.8.1",
+    "i18next": "23.10.1",
+    "next": "14.2.14",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "14.1.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^3.15.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^16.0.1",
+    "@types/node": "^20",
+    "@types/react": "18.2.47",
+    "@types/react-dom": "18.2.18",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.2",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.1",
+    "typescript": "^5"
+  }
+}
