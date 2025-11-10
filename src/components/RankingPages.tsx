@@ -1,0 +1,132 @@
+'use client';
+
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardHeader, CardTitle } from '@teable/ui-lib/dist/shadcn/ui/card';
+import { ColumnSelector } from './ranking/ColumnSelector';
+import { GroupFieldSelector } from './ranking/GroupFieldSelector';
+import { RankingConfig } from './ranking/RankingConfig';
+import { RankingExecutor } from './ranking/RankingExecutor';
+import { IRankingConfig } from './ranking/types';
+import { Gauge } from '@teable/icons';
+
+/**
+ * Main ranking interface component that provides a complete UI for configuring
+ * and executing ranking operations on Teable table records.
+ *
+ * Features:
+ * - Field selection for source data and target ranking column
+ * - Group-based ranking configuration
+ * - Multiple ranking algorithms (Standard, Dense)
+ * - Zero value handling options
+ * - Real-time validation and execution feedback
+ *
+ * @returns {JSX.Element} The main ranking interface component
+ */
+export function RankingPages() {
+  const { t } = useTranslation('common');
+
+  // Default configuration for ranking operations
+  const defaultConfig: IRankingConfig = {
+    sourceColumnId: '',
+    targetColumnId: '',
+    sortDirection: 'desc',
+    rankingMethod: 'standard',
+    zeroValueHandling: 'skipZero',
+  };
+
+  // State management for ranking configuration and execution status
+  const [rankingConfig, setRankingConfig] = useState<IRankingConfig>(defaultConfig);
+  const [isExecuting, setIsExecuting] = useState(false);
+
+  /**
+   * Handles configuration changes by merging partial updates with current state.
+   * Updates the ranking configuration with new values while preserving existing settings.
+   *
+   * @param {Partial<IRankingConfig>} config - Partial configuration object with updated values
+   */
+  const handleConfigChange = (config: Partial<IRankingConfig>) => {
+    const newConfig = { ...rankingConfig, ...config };
+    setRankingConfig(newConfig);
+  };
+
+  /**
+   * Callback function triggered when ranking execution starts.
+   * Sets the execution state to true to disable UI controls during processing.
+   */
+  const handleExecuteStart = () => {
+    setIsExecuting(true);
+  };
+
+  /**
+   * Callback function triggered when ranking execution completes.
+   * Resets the execution state to false to re-enable UI controls.
+   */
+  const handleExecuteComplete = () => {
+    setIsExecuting(false);
+  };
+
+  /**
+   * Validates that the current configuration is complete and valid for execution.
+   * Ensures both source and target columns are selected and are different fields.
+   *
+   * @returns {boolean} True if configuration is valid, false otherwise
+   */
+  const isConfigValid = rankingConfig.sourceColumnId &&
+                        rankingConfig.targetColumnId &&
+                        rankingConfig.sourceColumnId !== rankingConfig.targetColumnId;
+
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Gauge className="w-5 h-5" />
+            {t('ranking.title', '自动排名')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-8">
+          {/* 数据列设置 */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t('ranking.columnSettings', '数据列设置')}</h3>
+            <ColumnSelector
+              config={rankingConfig}
+              onConfigChange={handleConfigChange}
+              disabled={isExecuting}
+            />
+          </div>
+
+          {/* 分组设置 */}
+          <div className="space-y-4 pt-2 border-t">
+            <h3 className="text-lg font-medium">{t('ranking.groupSettings', '分组设置')}</h3>
+            <GroupFieldSelector
+              config={rankingConfig}
+              onConfigChange={handleConfigChange}
+              disabled={isExecuting}
+            />
+          </div>
+
+          {/* 排名规则 */}
+          <div className="space-y-4 pt-2 border-t">
+            <h3 className="text-lg font-medium">{t('ranking.rankingRules', '排名规则')}</h3>
+            <RankingConfig
+              config={rankingConfig}
+              onConfigChange={handleConfigChange}
+              disabled={isExecuting}
+            />
+          </div>
+
+          {/* 执行按钮 */}
+          <div className="flex justify-center">
+            <RankingExecutor
+              config={rankingConfig}
+              disabled={!isConfigValid || isExecuting}
+              onExecuteStart={handleExecuteStart}
+              onExecuteComplete={handleExecuteComplete}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

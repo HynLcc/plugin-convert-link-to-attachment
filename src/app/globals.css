@@ -1,8 +1,5 @@
 /* Minimal CSS for Teable Plugin */
 
-@import 'github-markdown-css/github-markdown.css';
-@import '../styles/markdown.css';
-
 /* CSS Variables for Theme Support */
 :root {
   --foreground: 210 40% 2%;
@@ -23,14 +20,6 @@
 }
 
 /* Essential styles only */
-.markdown-body {
-  color: hsl(var(--foreground)) !important;
-  max-width: none;
-}
-
-.dark .markdown-body {
-  color: hsl(var(--foreground)) !important;
-}
 
 /* Critical scrollbar styling */
 .custom-scrollbar::-webkit-scrollbar {

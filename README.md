@@ -1,52 +1,49 @@
-# Teable Markdown Renderer Plugin
+# Teable Ranking Plugin
 
-A [Teable](https://teable.ai) plugin that renders Markdown content.
+A [Teable](https://teable.ai) plugin for automatic ranking of table records.
 
 ## ✨ Features
 
-- 📝 **Markdown Rendering** - Renders Markdown content from selected table cells
-- 🎨 **Enhanced Styling** - Custom styling with GitHub-flavored Markdown support
-- 🌈 **Theme Support** - Full light/dark mode compatibility with automatic theme detection
+- 🏆 **Multiple Ranking Methods** - Standard and Dense ranking algorithms
+- 🎯 **Field Mapping** - Flexible source and target field selection
+- 📊 **Group-based Ranking** - Calculate rankings within specific groups
+- 🔧 **Advanced Configuration** - Sort direction, zero value handling, and more
+- 🎨 **Theme Support** - Full light/dark mode compatibility with automatic theme detection
 - 🌍 **Internationalization** - Complete i18n support (English/Chinese)
-- 📋 **GitHub-Flavored Markdown** - Support for tables, code blocks, and extended syntax
-- 🎯 **Code Highlighting** - Syntax highlighting
 - 📱 **Responsive Design** - Optimized for all screen sizes
-- 🎭 **Custom Components** - Enhanced callouts, tables, and blockquotes
 - ⚡ **Performance Optimized** - Built with React Query for efficient data fetching
+- 🛡️ **Error Handling** - Comprehensive error reporting and user feedback
+- 🔌 **Teable Integration** - Seamless integration with Teable tables and fields
 
 ## 🛠️ Tech Stack
 
 ### Core Framework
 - **Next.js 14.2.14** - React full-stack framework with App Router
 - **React 18.2.0** - UI library with modern React features
-- **TypeScript 5** - Type-safe JavaScript superset
+- **TypeScript 5** - Type-safe JavaScript superset (strict mode enabled)
 
 ### Teable Ecosystem
 - `@teable/sdk` - Plugin bridge and UI configuration
 - `@teable/openapi` - API client and type definitions
 - `@teable/core` - Core type definitions and utilities
-- `@teable/ui-lib` - Teable official UI component library
+- `@teable/ui-lib` - Teable official UI component library (shadcn/ui based)
 - `@teable/next-themes` - Theme switching support
 
-### Markdown & Styling
-- `react-markdown` - Markdown rendering with React components
-- `remark-gfm` - GitHub-flavored Markdown support
-- `shiki` - Syntax highlighting engine
-- `github-markdown-css` - GitHub-style Markdown CSS
-- `tailwindcss` - Atomic CSS framework
-- `@tailwindcss/typography` - Typography utilities
+### UI & Styling
+- **Tailwind CSS 3.4.1** - Atomic CSS framework with Teable UI configuration
+- **Lucide React** - Icon library for modern interfaces
 
 ### State Management & Data
-- `@tanstack/react-query` - Server state management and caching
-- `react-i18next` - Internationalization framework
-- `i18next` - Core internationalization library
+- `@tanstack/react-query 4.36.1` - Server state management, caching, and synchronization
+- `react-i18next 14.1.0` - Internationalization framework
+- `i18next 23.10.1` - Core internationalization library
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+
 - npm or yarn
-- Teable account with API access
+- Teable account with plugin access
 
 ### 1. Install Dependencies
 ```bash
@@ -55,9 +52,9 @@ npm install
 
 ### 2. Start Development Server
 ```bash
-npm run dev -p 3000
+npm run dev -p 3001
 ```
-Visit [http://localhost:3000](http://localhost:3000) to view the plugin.
+Visit [http://localhost:3001](http://localhost:3001) to view the plugin.
 
 ### 3. Build for Production
 ```bash
@@ -69,10 +66,9 @@ npm run build
 npm start
 ```
 
-### 5. Optimize Assets (Optional)
+### 5. Code Quality Checks
 ```bash
-npm run optimize
-npm run build:optimized
+npm run lint          # Run ESLint
 ```
 
 ## 📁 Project Structure
@@ -85,30 +81,36 @@ src/
 │   ├── layout.tsx               # Root layout component
 │   └── globals.css              # Global styles and CSS variables
 ├── components/
-│   ├── MarkdownRenderer.tsx     # Main Markdown rendering component
-│   ├── MarkdownPages.tsx        # Page wrapper component
+│   ├── RankingPages.tsx         # Main ranking interface component
+│   ├── ErrorBoundary.tsx        # Error boundary component
 │   ├── context/                 # React Context providers
 │   │   ├── EnvProvider.tsx      # Environment variable injection
 │   │   ├── I18nProvider.tsx     # Internationalization provider
 │   │   └── types.ts             # TypeScript type definitions
-│   ├── markdown/                # Custom Markdown components
-│   │   ├── CustomComponents.tsx # Enhanced Markdown component mappings
-│   │   ├── CodeBlock.tsx        # Syntax-highlighted code blocks
-│   │   ├── Callout.tsx          # Custom callout components
-│   │   └── TableOfContents.tsx  # TOC generation
+│   ├── ranking/                 # Ranking-specific components
+│   │   ├── ColumnSelector.tsx   # Field selection component
+│   │   ├── GroupFieldSelector.tsx # Group field selection
+│   │   ├── RankingConfig.tsx    # Ranking configuration UI
+│   │   ├── RankingExecutor.tsx  # Ranking execution engine
+│   │   └── types.ts             # Ranking type definitions
 │   └── ui/                      # UI utility components
-│       └── Icons.tsx            # Custom icon components
 ├── hooks/                       # Custom React hooks
 │   ├── useInitApi.ts           # API initialization
-│   └── useViewId.ts            # View ID management
-├── styles/                      # Styling
-│   ├── markdown.css            # Markdown-specific styles
-│   └── custom-enhancements.css  # Custom component styles
+│   ├── useFields.ts            # Field data fetching
+│   ├── useFieldMap.ts          # Field mapping utilities
+│   ├── useGlobalUrlParams.ts   # URL parameter management
+│   ├── useToast.ts             # Toast notifications
+│   └── useAsyncError.ts        # Async error handling
+├── lib/                         # Business logic and utilities
+│   ├── rankingAlgorithms.ts    # Ranking calculation algorithms
+│   └── rankRecord.ts           # Record ranking operations
+├── types/                       # Global type definitions
+│   ├── field.ts                # Field-related types
+│   └── index.ts                # Type exports
 ├── locales/                     # Internationalization files
 │   ├── en.json                 # English translations
 │   └── zh.json                 # Chinese translations
 └── scripts/                     # Build and optimization scripts
-    └── optimize-assets.js      # Asset optimization
 ```
 
 ## 🔧 Configuration
@@ -119,16 +121,26 @@ The plugin reads configuration from URL parameters via `EnvProvider.tsx`:
 - `baseId` - Teable base identifier
 - `pluginId` - Plugin identifier
 - `pluginInstallId` - Plugin installation ID
-- `tableId` - Target table for Markdown content
+- `tableId` - Target table for ranking operations
 - `shareId`, `positionId`, `positionType` - UI positioning
 - `lang`, `theme` - Localization and theme settings
 
-### Environment Setup
-The plugin automatically:
-- Reads Teable configuration from URL parameters
-- Sets up theme detection and switching
-- Initializes internationalization with proper language detection
-- Configures API clients with authentication
+### Ranking Configuration
+
+The plugin supports the following ranking configurations:
+
+#### Ranking Methods
+- **Standard Ranking**: `1, 2, 2, 4` - Standard competition ranking
+- **Dense Ranking**: `1, 2, 2, 3` - Dense ranking with no gaps
+- **European Ranking**: `1, 2, 2, 3` - European competition ranking
+
+#### Zero Value Handling
+- **Skip Zero Values**: Ignore zero values in ranking calculations
+- **Include Zero Values**: Include zero values in ranking
+
+#### Grouping
+- **No Grouping**: Calculate rankings across all records
+- **Group-based**: Calculate rankings within specified groups
 
 ## 🎨 Styling & Theming
 
@@ -138,11 +150,10 @@ The plugin automatically:
 - **Component Isolation** - Scoped styles for custom components
 - **Dark Mode Support** - Automatic theme detection and switching
 
-### Custom Components
-- **Callouts** - Color-coded information boxes with hover effects
-- **Code Blocks** - Syntax highlighting with copy buttons and line numbers
-- **Tables** - Enhanced styling with hover states and responsive design
-- **Blockquotes** - Custom styling with decorative elements
+### UI Components
+- **Shadcn/ui Components** - Modern, accessible UI components
+- **Teable UI Integration** - Consistent with Teable design system
+- **Form Controls** - Custom form elements for ranking configuration
 
 ## 🌍 Internationalization
 
@@ -163,11 +174,11 @@ import { usePluginBridge } from '@teable/sdk';
 
 const bridge = usePluginBridge();
 
-// Listen for selection changes
-bridge.on('syncSelection', handleSelection);
+// Listen for configuration changes
+bridge.on('syncUIConfig', handleConfigChange);
 
-// Get selected cell content
-const result = await bridge.getSelectionRecords(selection);
+// Get temporary token for API calls
+const token = await bridge.getSelfTempToken();
 ```
 
 ### API Integration
@@ -176,18 +187,32 @@ The plugin uses Teable's OpenAPI with automatic authentication:
 import { openApi } from '@teable/openapi';
 
 // All API calls are automatically authenticated
-const data = await openApi.getTableRecords(tableId, viewId);
+const fields = await openApi.getFields(tableId);
+const records = await openApi.getTableRecords(tableId, viewId);
+```
+
+## 🏆 Ranking Algorithms
+
+The plugin implements two ranking algorithms:
+
+### Standard Ranking
+```typescript
+// Example: Values [10, 20, 20, 30] → Ranks [1, 2, 2, 4]
+// Standard competition ranking with gaps
+```
+
+### Dense Ranking
+```typescript
+// Example: Values [10, 20, 20, 30] → Ranks [1, 2, 2, 3]
+// Dense ranking without gaps
 ```
 
 ## 🚀 Deployment
 
-### Build Optimization
+### Build Process
 ```bash
-# Analyze bundle size
-npm run analyze
-
-# Build with asset optimization
-npm run build:optimized
+# Build for production
+npm run build
 ```
 
 ### Plugin Installation
@@ -196,13 +221,35 @@ npm run build:optimized
 3. Configure in Teable with proper URL parameters
 4. Test plugin functionality in Teable environment
 
+## 🧪 Development
+
+### Code Quality
+- **TypeScript Strict Mode** - Full type safety enabled
+- **ESLint** - Code quality and style enforcement
+- **Prettier** - Consistent code formatting
+
+### Performance Features
+- **React Query** - Efficient data fetching and caching
+- **React.memo** - Component optimization
+- **useMemo/useCallback** - Hook optimization
+- **Code Splitting** - Optimized bundle loading
+
 ## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Commit your changes: `git commit -m 'Add amazing feature'`
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
+
+### Development Guidelines
+- Write comprehensive TypeScript types
+- Add English JSDoc comments for all public functions
+- Follow the existing code style and patterns
+- Test your changes thoroughly
+- Update documentation as needed
 
 ## 📄 License
 

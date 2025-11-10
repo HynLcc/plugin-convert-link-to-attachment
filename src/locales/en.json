@@ -1,26 +1,66 @@
 {
-  "selection": {
-    "empty": "No content",
-    "hint": "Select a cell to preview",
-    "error": {
-      "invalidType": "Invalid selection",
-      "multipleCells": "Select only one cell",
-      "noRecords": "No data found",
-      "fetchFailed": "Load failed"
-    }
+  "ranking": {
+    "title": "Auto Rank",
+    "columnSettings": "Field Selection",
+    "selectSourceColumn": "Source Field",
+    "selectTargetColumn": "Target Field",
+    "selectSourceColumnPlaceholder": "Select a field",
+    "selectTargetColumnPlaceholder": "Select a field",
+    "noNumericColumns": "No numeric fields found",
+    "noColumns": "No available fields found",
+    "rankingRules": "Ranking Configuration",
+    "sortDirection": "Sort Direction",
+    "ascending": "Ascending",
+    "descending": "Descending",
+    "rankingMethod": "Ranking Method",
+    "standardRanking": "Standard Ranking",
+    "denseRanking": "Dense Ranking",
+    "europeanRanking": "European Ranking",
+    "zeroValueHandling": "Zero Value Handling",
+    "skipZero": "Skip Zero Values",
+    "includeZero": "Include Zero Values",
+    "executeRanking": "Execute Ranking",
+    "executing": "Executing...",
+    "rankingComplete": "Ranking Complete",
+    "rankingCompleteDesc": "Successfully calculated ranking for {count} records",
+    "rankingPartialComplete": "Ranking Partially Complete",
+    "rankingPartialCompleteDesc": "{success} succeeded, {fail} failed",
+    "rankingFailed": "Ranking Failed",
+    "rankingFailedDesc": "An error occurred during ranking calculation",
+    "confirmOverwrite": "Overwrite existing data?",
+    "fetchRecordsFailed": "Failed to fetch records",
+    "fetchRecordsFailedDesc": "Unable to fetch table records, please check permissions",
+    "noValidData": "No valid data",
+    "noValidDataDesc": "No valid data found for ranking",
+    "sameFieldError": "Source field and target field cannot be the same",
+    "arrayFieldInfo": "Lookup/Rollup fields will use the first value for ranking calculation",
+    "arrayFieldExecuteWarning": "Lookup/Rollup field detected. The first value will be used for ranking calculation. Continue?",
+    "fieldType": {
+      "lookup": "Lookup",
+      "rollup": "Rollup",
+      "formula": "Formula",
+      "number": "Number",
+      "text": "Text Field",
+      "singleSelect": "Single Select",
+      "multipleSelect": "Multiple Select",
+      "date": "Date Field",
+      "user": "User Field",
+      "unknown": "Unknown Type"
+    },
+    "arrayHint": "Use first value for ranking",
+    "onlyOneField": "Only one numeric field available. Create another field for results",
+    "groupSettings": "Group Settings (Optional)",
+    "groupColumn": "Group Field",
+    "groupFieldPlaceholder": "Select the field to be used for grouping",
+    "noGrouping": "No Grouping",
+    "groupingHint": "Ranking will be calculated within each group separately",
+    "noGroupFields": "No groupable fields found",
+    "groupedRankingCompleteDesc": "Successfully calculated ranking for {count} records across {groups} groups",
+    "failedRecords": "{fail} failed",
+    "buttonDisabledHint": "Please complete configuration first: select source field and target field"
   },
-  "demo": {
-    "content": "Markdown Renderer: Enter Markdown content in table cells and select them to preview the rendering effect."
-  },
-  "search": {
-    "placeholder": "Search in document...",
-    "searching": "Searching...",
-    "results": "results",
-    "noResults": "No results found",
-    "shortcuts": "Shortcuts:",
-    "found": "Found {{count}} match{{count, plural, =1 {} other {s}}}",
-    "navigate": "↑↓ Navigate",
-    "next": "Enter Next",
-    "close": "Esc Close"
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
 }

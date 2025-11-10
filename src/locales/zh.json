@@ -1,26 +1,66 @@
 {
-  "selection": {
-    "empty": "无内容",
-    "hint": "选择单元格预览",
-    "error": {
-      "invalidType": "选区无效",
-      "multipleCells": "只能选择一个单元格",
-      "noRecords": "无数据",
-      "fetchFailed": "加载失败"
-    }
+  "ranking": {
+    "title": "自动排名",
+    "columnSettings": "字段映射",
+    "selectSourceColumn": "选择用于计算排名的字段",
+    "selectTargetColumn": "排名结果将写入的字段",
+    "selectSourceColumnPlaceholder": "请选择字段",
+    "selectTargetColumnPlaceholder": "请选择字段",
+    "noNumericColumns": "未找到数字列",
+    "noColumns": "未找到可用列",
+    "rankingRules": "排名规则",
+    "sortDirection": "排序方式",
+    "ascending": "升序",
+    "descending": "降序",
+    "rankingMethod": "排名方式",
+    "standardRanking": "标准排名",
+    "denseRanking": "密集排名",
+    "europeanRanking": "欧洲排名",
+    "zeroValueHandling": "0 值处理",
+    "skipZero": "跳过 0 值",
+    "includeZero": "包含 0 值",
+    "executeRanking": "执行排名",
+    "executing": "执行中...",
+    "rankingComplete": "排名完成",
+    "rankingCompleteDesc": "成功为 {count} 条记录计算排名",
+    "rankingPartialComplete": "排名部分完成",
+    "rankingPartialCompleteDesc": "成功 {success} 条，失败 {fail} 条",
+    "rankingFailed": "排名失败",
+    "rankingFailedDesc": "排名计算过程中发生错误",
+    "confirmOverwrite": "目标列已有数据，是否覆盖？",
+    "fetchRecordsFailed": "获取记录失败",
+    "fetchRecordsFailedDesc": "无法获取表格记录，请检查权限",
+    "noValidData": "没有有效数据",
+    "noValidDataDesc": "没有找到可以排名的有效数据",
+    "sameFieldError": "源字段和目标字段不能相同",
+    "arrayFieldInfo": "查找/汇总字段将取第一个值进行排名计算",
+    "arrayFieldExecuteWarning": "检测到查找/汇总字段，将使用第一个值进行排名计算。是否继续？",
+    "fieldType": {
+      "lookup": "查找",
+      "rollup": "汇总",
+      "formula": "公式",
+      "number": "数字",
+      "text": "文本字段",
+      "singleSelect": "单选字段",
+      "multipleSelect": "多选字段",
+      "date": "日期字段",
+      "user": "用户字段",
+      "unknown": "未知类型"
+    },
+    "arrayHint": "取首值进行排名",
+    "onlyOneField": "只有一个数字字段，请先创建另一个数字字段用于存储排名结果",
+    "groupSettings": "分组设置（可选）",
+    "groupColumn": "分组字段",
+    "groupFieldPlaceholder": "选择用于分组的字段",
+    "noGrouping": "不分组",
+    "groupingHint": "排名将在每个分组内分别计算",
+    "noGroupFields": "未找到可用于分组的字段",
+    "groupedRankingCompleteDesc": "成功为 {count} 条记录计算排名，共 {groups} 个分组",
+    "failedRecords": "失败 {fail} 条",
+    "buttonDisabledHint": "请先完成配置：选择源字段和目标字段"
   },
-  "demo": {
-    "content": "Markdown 渲染器：在表格单元格中输入 Markdown 内容，选中即可查看渲染效果。"
-  },
-  "search": {
-    "placeholder": "在文档中搜索...",
-    "searching": "搜索中...",
-    "results": "个结果",
-    "noResults": "未找到结果",
-    "shortcuts": "快捷键:",
-    "found": "找到 {{count}} 个匹配项",
-    "navigate": "↑↓ 导航",
-    "next": "Enter 下一个",
-    "close": "Esc 关闭"
+  "common": {
+    "cancel": "取消",
+    "confirm": "确认"
   }
 }

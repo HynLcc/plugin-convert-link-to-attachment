@@ -16,13 +16,13 @@ const resources = {
 export async function generateMetadata(): Promise<Metadata> {
 
   return {
-    title: 'Markdown Renderer',
+    title: '自动排名',
   };
 }
 
 export default async function Home(props: { searchParams: Promise<IPageParams> }) {
   const searchParams = await props.searchParams;
-  
+
   return (
     <main className="h-screen">
       <EnvProvider>

@@ -89,12 +89,28 @@ coverage/
 # Claude Code config
 .claude/
 
-# Development and test files
-test-content.md
-CLAUDE.md
-
 # Default Next.js icons (remove if not used)
 public/vercel.svg
 
-# Development scripts (optional)
-scripts/
+# Additional development files
+.env.example
+!.env.example
+
+# Bundle analysis
+.nyc_output
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package manager files
+.npmrc
+.yarnrc
+
+# Storybook build outputs (if using)
+storybook-static
+
+# Local development files (keep important docs)
+需求.md
+RANKING_FEATURE_SUMMARY.md
+CLAUDE.md
