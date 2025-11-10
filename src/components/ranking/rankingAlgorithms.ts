@@ -12,24 +12,29 @@ export function standardRanking(values: (number | null)[]): number[] {
   const sortedValues = [...validValues].sort((a, b) => b - a);
 
   // 计算每个值的排名
-  let currentRank = 1;
+  let currentRank: number = 1;
   const valueCount = new Map<number, number>();
 
   // 统计每个值的出现次数
   for (const value of validValues) {
-    valueCount.set(value, (valueCount.get(value) || 0) + 1);
+    const currentCount = valueCount.get(value) || 0;
+    valueCount.set(value, currentCount + 1);
   }
 
   // 为唯一值分配排名
   for (let i = 0; i < sortedValues.length; ) {
-    const value = sortedValues[i];
+    const value = sortedValues[i]!;
     const count = valueCount.get(value)!;
     ranks.set(value, currentRank);
     currentRank += count;
     i += count;
   }
 
-  return values.map(v => v !== null ? ranks.get(v) || 0 : 0);
+  return values.map(v => {
+    if (v === null) return 0;
+    const rank = ranks.get(v);
+    return rank ?? 0;
+  });
 }
 
 /**
@@ -48,7 +53,11 @@ export function denseRanking(values: (number | null)[]): number[] {
     ranks.set(value, index + 1);
   });
 
-  return values.map(v => v !== null ? ranks.get(v) || 0 : 0);
+  return values.map(v => {
+    if (v === null) return 0;
+    const rank = ranks.get(v);
+    return rank ?? 0;
+  });
 }
 
 
@@ -115,7 +124,13 @@ export function calculateRanking(input: IRankingInput): IRankingOutput {
 
   // 准备排名计算的值数组
   const recordIds = Array.from(valueMap.keys());
-  const values = recordIds.map(id => valueMap.get(id)!);
+  const values: number[] = [];
+  for (const id of recordIds) {
+    const value = valueMap.get(id);
+    if (value !== null && value !== undefined) {
+      values.push(value);
+    }
+  }
 
   // 根据排序方向调整值
   let adjustedValues = values;
@@ -140,7 +155,7 @@ export function calculateRanking(input: IRankingInput): IRankingOutput {
   // 构建结果
   const results: IRankingResult[] = recordIds.map((recordId, index) => ({
     recordId,
-    rank: ranks[index],
+    rank: ranks[index]!,
   }));
 
   return {
@@ -165,8 +180,9 @@ function getGroupName(groupValue: string | number | boolean | null | undefined):
     return groupValue.join(', ') || '未分组';
   }
 
-  if (typeof groupValue === 'object' && groupValue.name) {
-    return groupValue.name;
+  if (typeof groupValue === 'object' && groupValue !== null && 'name' in groupValue) {
+    const obj = groupValue as { name?: string };
+    return obj.name || String(groupValue);
   }
 
   return String(groupValue);
@@ -207,7 +223,10 @@ export function calculateGroupedRanking(input: IGroupedRankingInput): IGroupedRa
     if (!groups.has(groupKey)) {
       groups.set(groupKey, []);
     }
-    groups.get(groupKey)!.push(record);
+    const group = groups.get(groupKey);
+    if (group) {
+      group.push(record);
+    }
   });
 
   

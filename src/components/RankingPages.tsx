@@ -42,11 +42,30 @@ export function RankingPages() {
   /**
    * Handles configuration changes by merging partial updates with current state.
    * Updates the ranking configuration with new values while preserving existing settings.
+   * Properly handles undefined values for optional properties and empty config objects.
    *
    * @param {Partial<IRankingConfig>} config - Partial configuration object with updated values
    */
   const handleConfigChange = (config: Partial<IRankingConfig>) => {
-    const newConfig = { ...rankingConfig, ...config };
+    // If config is empty, no changes needed
+    if (Object.keys(config).length === 0) {
+      return;
+    }
+
+    // Handle optional properties that need to be removed when set to undefined
+    const newConfig = { ...rankingConfig };
+
+    // Only include properties that are explicitly provided in config
+    Object.keys(config).forEach(key => {
+      const value = config[key as keyof IRankingConfig];
+      if (value !== undefined) {
+        (newConfig as any)[key] = value;
+      } else {
+        // If value is undefined, remove the property (for optional fields)
+        delete (newConfig as any)[key];
+      }
+    });
+
     setRankingConfig(newConfig);
   };
 

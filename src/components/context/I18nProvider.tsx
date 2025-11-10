@@ -29,7 +29,7 @@ const initTranslation = (
   const i18nOptions = {
     ...i18nConfigDefault,
     lng: lang,
-    defaultNS,
+    defaultNS: defaultNS || 'common',
     resources: JSON.parse(JSON.stringify(resources)),
     initImmediate: false,
   };

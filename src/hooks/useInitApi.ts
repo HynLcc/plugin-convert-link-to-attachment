@@ -79,7 +79,7 @@ export const useInitApi = () => {
      *
      * @param {IUrlParams} urlParams - Updated URL parameters from Teable
      */
-    const handleUrlParams = (urlParams: IUrlParams) => {
+    const handleUrlParams = (_urlParams: IUrlParams) => {
       // Reconfigure API to get the latest host configuration
       reconfigureApi();
     };

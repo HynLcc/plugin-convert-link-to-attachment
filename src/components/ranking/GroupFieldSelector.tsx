@@ -92,8 +92,13 @@ export function GroupFieldSelector({ config, onConfigChange, disabled }: IGroupF
 
   // 处理字段选择变化
   const handleGroupFieldChange = (fieldId: string) => {
-    const newGroupColumnId = fieldId === 'none' ? undefined : fieldId;
-    onConfigChange({ groupColumnId: newGroupColumnId });
+    if (fieldId === 'none') {
+      // 显式传递 undefined 来删除 groupColumnId 属性
+      // handleConfigChange 会删除值为 undefined 的可选属性
+      onConfigChange({ groupColumnId: undefined } as unknown as Partial<IRankingConfig>);
+    } else {
+      onConfigChange({ ...config, groupColumnId: fieldId });
+    }
   };
 
   return (
@@ -104,7 +109,7 @@ export function GroupFieldSelector({ config, onConfigChange, disabled }: IGroupF
       <Select
         value={config.groupColumnId || 'none'}
         onValueChange={handleGroupFieldChange}
-        disabled={disabled}
+        disabled={disabled || false}
       >
         <SelectTrigger id="group-field" className="w-full">
           <SelectValue placeholder={t('ranking.groupFieldPlaceholder', '选择分组字段（可选）')} />

@@ -67,8 +67,8 @@ export function RankingExecutor({ config, disabled, onExecuteStart, onExecuteCom
 
           const records = result.data.records || [];
 
-          
-          allRecords.push(...records);
+
+          allRecords.push(...records as IRecordData[]);
 
           // 如果返回的记录数少于pageSize，说明已经获取完所有数据
           if (records.length < pageSize) {
@@ -105,15 +105,21 @@ export function RankingExecutor({ config, disabled, onExecuteStart, onExecuteCom
         const targetFieldName = fieldNameMap[config.targetColumnId];
         const groupFieldName = config.groupColumnId ? fieldNameMap[config.groupColumnId] : undefined;
 
-        // 计算排名（使用字段名，支持分组）
-        const rankingResult = calculateGroupedRanking({
+        // 构建排名输入参数
+        const rankingInput: any = {
           records,
-          sourceColumnId: sourceFieldName,
-          groupColumnId: groupFieldName,
+          sourceColumnId: sourceFieldName!,
           sortDirection: config.sortDirection,
           rankingMethod: config.rankingMethod,
           zeroValueHandling: config.zeroValueHandling,
-        });
+        };
+
+        // 只有当分组字段存在时才添加它
+        if (groupFieldName) {
+          rankingInput.groupColumnId = groupFieldName;
+        }
+
+        const rankingResult = calculateGroupedRanking(rankingInput);
 
         if (rankingResult.results.length === 0) {
           showWarning(t('ranking.noValidData'), t('ranking.noValidDataDesc'));
@@ -121,12 +127,16 @@ export function RankingExecutor({ config, disabled, onExecuteStart, onExecuteCom
         }
 
         // 准备更新数据（使用字段名）
-        const updateRecords = rankingResult.results.map(result => ({
-          id: result.recordId,
-          fields: {
-            [targetFieldName]: result.rank, // 写入数字而不是字符串
-          },
-        }));
+        const updateRecords = rankingResult.results.map(result => {
+          const record: any = {
+            id: result.recordId,
+            fields: {},
+          };
+          if (targetFieldName) {
+            record.fields[targetFieldName] = result.rank; // 写入数字而不是字符串
+          }
+          return record;
+        });
 
         // 批量更新记录
         if (!urlParams.tableId) {

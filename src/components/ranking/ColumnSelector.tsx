@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@teable/ui-lib/dist/shadcn/ui/select';
 import { Label } from '@teable/ui-lib/dist/shadcn/ui/label';
 import { useFields } from '../../hooks/useFields';
-import { IRankingConfig, IField } from '../../types';
+import { IRankingConfig, IField, IUIField } from '../../types';
 import { Hash, Code, Search, Layers } from '@teable/icons';
 
 interface IColumnSelectorProps {
@@ -19,7 +19,7 @@ export function ColumnSelector({ config, onConfigChange, disabled }: IColumnSele
   const { data: fields } = useFields();
 
   // 字段类型图标映射 - 基于字段属性而不是仅基于type
-  const getFieldTypeIcon = (field: IField) => {
+  const getFieldTypeIcon = (field: IField | IUIField) => {
     // 查找字段（包括普通查找和条件查找）使用Search图标
     if (field.isLookup || field.isConditionalLookup) {
       return Search;
@@ -41,11 +41,11 @@ export function ColumnSelector({ config, onConfigChange, disabled }: IColumnSele
     // 检查字段是否返回数字值
     const isNumericField = field.cellValueType === 'number';
     return isNumericField;
-  }).map((field: IField) => {
+  }).map((field: IField): IUIField => {
     // 基于 lookupOptions.filter 准确识别字段类型
     const hasFilter = field.lookupOptions?.filter !== undefined;
 
-    return {
+    const uiField: IUIField = {
       id: field.id,
       name: field.name,
       type: field.type,
@@ -56,10 +56,16 @@ export function ColumnSelector({ config, onConfigChange, disabled }: IColumnSele
       isConditionalLookup: field.isConditionalLookup === true,
       isRollup: field.type === 'rollup' || field.type === 'conditionalRollup',
       isMultipleCellValue: field.isMultipleCellValue === true,
-      lookupOptions: field.lookupOptions,
       // 新增：基于filter属性的字段类型判断
       isConditionalField: hasFilter,
     };
+
+    // 只有当lookupOptions存在时才添加它
+    if (field.lookupOptions) {
+      uiField.lookupOptions = field.lookupOptions;
+    }
+
+    return uiField;
   });
 
   // 目标字段只支持纯数字字段（必须是用户可以手动输入的字段）
@@ -121,20 +127,20 @@ export function ColumnSelector({ config, onConfigChange, disabled }: IColumnSele
 
       
       <div className="space-y-2">
-        <Label htmlFor="source-column">
-          {t('ranking.selectSourceColumn', '选择用于计算排名的字段')}
+        <Label htmlFor="source-field">
+          {t('ranking.selectSourceField', '选择用于计算排名的字段')}
         </Label>
         <Select
           value={config.sourceColumnId}
           onValueChange={handleSourceColumnChange}
           disabled={disabled || (numericFields?.length || 0) === 0}
         >
-          <SelectTrigger id="source-column">
+          <SelectTrigger id="source-field">
             <SelectValue
               placeholder={
                 (numericFields?.length || 0) === 0
-                  ? t('ranking.noNumericColumns', '未找到数字列')
-                  : t('ranking.selectSourceColumnPlaceholder', '请选择字段')
+                  ? t('ranking.noNumericFields', '未找到数字字段')
+                  : t('ranking.selectSourceFieldPlaceholder', '请选择字段')
               }
             >
               {selectedSourceField ? (
@@ -192,28 +198,28 @@ export function ColumnSelector({ config, onConfigChange, disabled }: IColumnSele
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="target-column">
-          {t('ranking.selectTargetColumn', '排名结果将写入的字段')}
+        <Label htmlFor="target-field">
+          {t('ranking.selectTargetField', '排名结果将写入的字段')}
         </Label>
         <Select
           value={config.targetColumnId}
           onValueChange={handleTargetColumnChange}
           disabled={disabled || targetFields.length === 0}
         >
-          <SelectTrigger id="target-column">
+          <SelectTrigger id="target-field">
             <SelectValue
               placeholder={
                 targetFields.length === 0
                   ? ((numericFields?.length || 0) === 1
                       ? t('ranking.onlyOneField', '只有一个数字字段，请先创建另一个数字字段用于存储排名结果')
-                      : t('ranking.noColumns', '未找到可用列'))
-                  : t('ranking.selectTargetColumnPlaceholder', '请选择字段')
+                      : t('ranking.noFields', '未找到可用字段'))
+                  : t('ranking.selectTargetFieldPlaceholder', '请选择字段')
               }
             />
           </SelectTrigger>
           <SelectContent>
             {targetFields.map((field: IField) => {
-              const IconComponent = getFieldTypeIcon(field.type);
+              const IconComponent = getFieldTypeIcon(field);
               return (
                 <SelectItem key={field.id} value={field.id}>
                   <div className="flex items-center gap-2">

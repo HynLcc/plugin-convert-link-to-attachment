@@ -41,18 +41,26 @@ export function useConfigExportImport() {
    * 导出配置为 JSON 字符串
    */
   const exportConfig = useCallback((config: IRankingConfig): string => {
+    const metadata: any = {
+      exportDate: new Date().toISOString(),
+      fieldNames: fields?.reduce((map, field) => {
+        map[field.id] = field.name;
+        return map;
+      }, {} as Record<string, string>) || {},
+    };
+
+    // 只有当值存在时才添加可选属性
+    if (urlParams.tableId) {
+      metadata.tableId = urlParams.tableId;
+    }
+    if (urlParams.baseId) {
+      metadata.baseId = urlParams.baseId;
+    }
+
     const exportData: IExportableConfig = {
       version: '1.0',
       config,
-      metadata: {
-        exportDate: new Date().toISOString(),
-        tableId: urlParams.tableId,
-        baseId: urlParams.baseId,
-        fieldNames: fields?.reduce((map, field) => {
-          map[field.id] = field.name;
-          return map;
-        }, {} as Record<string, string>) || {},
-      },
+      metadata,
     };
 
     return JSON.stringify(exportData, null, 2);
@@ -122,17 +130,17 @@ export function useConfigExportImport() {
       }
 
       // 验证字段值
-      if (!Array.isArray(['asc', 'desc']).includes(config.sortDirection)) {
+      if (!['asc', 'desc'].includes(config.sortDirection)) {
         result.errors.push('Invalid sortDirection value');
         return result;
       }
 
-      if (!Array.isArray(['standard', 'dense']).includes(config.rankingMethod)) {
+      if (!['standard', 'dense'].includes(config.rankingMethod)) {
         result.errors.push('Invalid rankingMethod value');
         return result;
       }
 
-      if (!Array.isArray(['skipZero', 'includeZero']).includes(config.zeroValueHandling)) {
+      if (!['skipZero', 'includeZero'].includes(config.zeroValueHandling)) {
         result.errors.push('Invalid zeroValueHandling value');
         return result;
       }

@@ -1,6 +1,6 @@
 import { usePluginBridge } from "@teable/sdk";
 import { useEffect, useState } from "react";
-import { IPageParams } from "../context/types";
+// import { IPageParams } from "../context/types"; // 不再使用IPageParams
 import type { IUrlParams } from "../types";
 
 // Global URL parameter state shared across all hook instances
@@ -19,14 +19,14 @@ function parseUrlParamsFromWindow(): Partial<IUrlParams> {
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
-    const params: IUrlParams = {};
+    const params: any = {};
 
     // 转换URL参数为对象
     for (const [key, value] of urlParams.entries()) {
-      params[key as keyof IUrlParams] = value;
+      params[key] = value;
     }
 
-    return params;
+    return params as Partial<IUrlParams>;
   } catch (error) {
     return {};
   }
@@ -98,8 +98,9 @@ export const useGlobalUrlParams = (): Partial<IUrlParams> => {
     const tryGetUrlParams = async () => {
       try {
         // 使用bridge的方法获取当前URL参数，如果bridge支持的话
-        if (bridge.getUIConfig) {
-          await bridge.getUIConfig();
+        const bridgeAny = bridge as any;
+        if (bridgeAny.getUIConfig) {
+          await bridgeAny.getUIConfig();
         }
       } catch (error) {
         // 忽略错误

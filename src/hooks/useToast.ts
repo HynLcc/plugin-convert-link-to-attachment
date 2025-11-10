@@ -42,7 +42,7 @@ export const useToast = () => {
     showToast('info', message, description, options);
   };
 
-  const showLoading = (message: string, description?: string, options?: ToastOptions) => {
+  const showLoading = (message: string, description?: string, _options?: ToastOptions) => {
     const fullMessage = description ? `${message}: ${description}` : message;
     return toast.loading(fullMessage, {
       position: 'top-right',
