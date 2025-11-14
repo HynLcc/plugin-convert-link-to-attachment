@@ -15,7 +15,7 @@ export function useViews() {
     },
     enabled: !!tableId,
     staleTime: 5 * 60 * 1000, // 5分钟缓存
-    cacheTime: 10 * 60 * 1000, // 10分钟缓存
+    gcTime: 10 * 60 * 1000, // 10分钟缓存 (使用 gcTime 替代已废弃的 cacheTime)
     retry: 2,
   });
 }

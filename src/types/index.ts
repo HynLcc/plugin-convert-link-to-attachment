@@ -1,72 +1,6 @@
 // 核心业务类型定义
 
 /**
- * 排名配置接口
- */
-export interface IRankingConfig {
-  sourceColumnId: string;
-  targetColumnId: string;
-  sortDirection: 'asc' | 'desc';
-  rankingMethod: 'standard' | 'dense';
-  zeroValueHandling: 'skipZero' | 'includeZero';
-  groupColumnId?: string; // 可选的分组字段ID
-  viewId?: string; // 可选的视图ID，用于筛选数据范围
-}
-
-/**
- * 排名输入接口
- */
-export interface IRankingInput {
-  records: IRecordData[];
-  sourceColumnId: string;
-  sortDirection: 'asc' | 'desc';
-  rankingMethod: 'standard' | 'dense';
-  zeroValueHandling: 'skipZero' | 'includeZero';
-}
-
-/**
- * 分组排名输入接口
- */
-export interface IGroupedRankingInput extends IRankingInput {
-  groupColumnId?: string; // 可选的分组字段ID
-}
-
-/**
- * 排名结果接口
- */
-export interface IRankingResult {
-  recordId: string;
-  rank: number;
-}
-
-/**
- * 分组排名结果接口
- */
-export interface IGroupedRankingResult extends IRankingResult {
-  groupValue?: string | number | boolean | null; // 分组值，支持常见字段类型
-  groupName?: string; // 人类可读的分组名称
-}
-
-/**
- * 排名输出接口
- */
-export interface IRankingOutput {
-  results: IRankingResult[];
-  processedCount: number;
-  skippedCount: number;
-}
-
-/**
- * 分组排名输出接口
- */
-export interface IGroupedRankingOutput {
-  results: IGroupedRankingResult[];
-  processedCount: number;
-  skippedCount: number;
-  groupCount: number; // 分组数量
-}
-
-/**
  * 记录数据接口
  */
 export interface IRecordData {
@@ -133,24 +67,9 @@ export interface IFieldOption {
 }
 
 /**
- * 排名算法类型
- */
-export type RankingMethod = 'standard' | 'dense';
-
-/**
  * 排序方向类型
  */
 export type SortDirection = 'asc' | 'desc';
-
-/**
- * 0值处理策略类型
- */
-export type ZeroValueHandling = 'skipZero' | 'includeZero';
-
-/**
- * 排名计算状态类型
- */
-export type RankingStatus = 'idle' | 'loading' | 'success' | 'error';
 
 /**
  * 错误类型
@@ -161,16 +80,6 @@ export interface IAppError {
   details?: Record<string, unknown>;
 }
 
-/**
- * 排名执行结果类型
- */
-export interface IRankingExecutionResult {
-  success: boolean;
-  processedCount: number;
-  failedCount: number;
-  groupCount?: number;
-  error?: IAppError;
-}
 
 /**
  * Toast 通知类型

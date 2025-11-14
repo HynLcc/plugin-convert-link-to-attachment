@@ -38,8 +38,9 @@ export function configureApi() {
       config.baseURL = currentBaseUrl;
     }
 
-    // 确保Content-Type
-    if (!config.headers['Content-Type']) {
+    // 确保Content-Type（但如果是 FormData，让浏览器自动设置）
+    // FormData 需要浏览器自动设置 multipart/form-data 的 boundary
+    if (!(config.data instanceof FormData) && !config.headers['Content-Type']) {
       config.headers['Content-Type'] = 'application/json';
     }
 

@@ -1,5 +1,3 @@
-import withBundleAnalyzer from '@next/bundle-analyzer';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 启用压缩
@@ -24,8 +22,20 @@ const nextConfig = {
 
   // 启用 SWC 压缩
   swcMinify: true,
+
+  // Webpack 配置
+  webpack: (config, { isServer }) => {
+    // 修复 Teable SDK 模块导入路径问题
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      // 修复 @teable/openapi 的 src 路径导入问题
+      '@teable/openapi/src/record/button-click': '@teable/openapi/dist/record/button-click',
+      // 修复 @teable/ui-lib 的 src 路径导入问题
+      '@teable/ui-lib/src/shadcn/ui/sonner': '@teable/ui-lib/dist/shadcn/ui/sonner',
+    };
+
+    return config;
+  },
 };
 
-export default withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})(nextConfig);
+export default nextConfig;
