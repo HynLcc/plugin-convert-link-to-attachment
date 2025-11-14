@@ -134,5 +134,4 @@ MIT License
 ## 🔗 Related Links
 
 - [Teable Official Website](https://teable.ai)
-- [Teable SDK Documentation](https://teable.github.io/docs/)
 - [Next.js Documentation](https://nextjs.org/docs)
